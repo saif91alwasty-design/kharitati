@@ -25,7 +25,7 @@ The main goal of this project is to provide high-precision astrological calculat
 
 Kerykeion also serves as the engine behind the hosted [Astrologer API](https://www.kerykeion.net/astrologer-api), and it integrates seamlessly with LLM and AI applications.
 
-## Astrology API
+## Hosted API
 
 If you are building a commercial application, a SaaS, or prefer to keep the codebase closed-source, consider the hosted **[Astrologer API](https://www.kerykeion.net/astrologer-api/subscribe)** on RapidAPI.
 
