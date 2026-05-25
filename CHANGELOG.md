@@ -1,5 +1,20 @@
 # Changelog
 
+## 5.12.9
+
+_2026-05-25_
+
+**Security:**
+
+- **idna** 3.11 → 3.16 — specially crafted inputs to `idna.encode()` could bypass the CVE-2024-3651 fix.
+- **urllib3** 2.6.3 → 2.7.0 — sensitive headers forwarded across origins in proxied low-level redirects; decompression-bomb safeguards bypassed in parts of the streaming API.
+- **requests** 2.32.5 → 2.34.2 — insecure temp file reuse in `extract_zipped_paths()`.
+- **pytest** 9.0.2 → 9.0.3 — vulnerable tmpdir handling.
+
+**Breaking:**
+
+- Minimum Python version raised from 3.9 to 3.10 (Python 3.9 reached EOL October 2025).
+
 ## 5.12.0
 
 _2026-03-18_
