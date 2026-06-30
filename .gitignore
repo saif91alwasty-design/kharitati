@@ -80,3 +80,6 @@ sync-docs.sh
 .env
 .opencode/plans
 /task/
+
+# Local-only symlink to the canonical skill (canonical lives in skills/kerykeion/)
+.claude/skills/kerykeion
