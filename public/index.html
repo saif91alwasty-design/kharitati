@@ -3,7 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>حساب الخارطة الفلكية الشخصية</title>
+    <title>حساب الخارطة الفلكية الشخصية مجاناً</title>
+    <meta name="description" content="احسب خارطتك الفلكية الشخصية مجاناً. اعرف مواقع الكواكب، البرج، الصعود، والتحليل الفلكي الدقيق.">
+    <meta name="keywords" content="خارطة فلكية, أبراج, تنجيم, حساب البرج, الكواكب, علم الفلك">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="حساب الخارطة الفلكية الشخصية">
+    <meta property="og:description" content="اكتشف أسرار شخصيتك من خلال خارطتك الفلكية">
+    <meta property="og:type" content="website">
+    
     <style>
         * {
             margin: 0;
@@ -38,6 +46,7 @@
             text-align: center;
             color: #666;
             margin-bottom: 30px;
+            font-size: 1.1em;
         }
         
         .form-group {
@@ -75,6 +84,7 @@
             font-weight: bold;
             cursor: pointer;
             margin-top: 10px;
+            transition: transform 0.2s;
         }
         
         button:hover {
@@ -85,33 +95,7 @@
         button:disabled {
             opacity: 0.6;
             cursor: not-allowed;
-        }
-        
-        #result {
-            margin-top: 30px;
-            padding: 20px;
-            background: #f8f9fa;
-            border-radius: 10px;
-            display: none;
-        }
-        
-        .planet-card {
-            background: white;
-            padding: 15px;
-            margin: 10px 0;
-            border-radius: 8px;
-            border-right: 4px solid #667eea;
-        }
-        
-        .planet-name {
-            font-weight: bold;
-            color: #667eea;
-            font-size: 1.1em;
-        }
-        
-        .planet-info {
-            color: #666;
-            margin-top: 5px;
+            transform: none;
         }
         
         .loading {
@@ -135,6 +119,43 @@
             100% { transform: rotate(360deg); }
         }
         
+        #result {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            display: none;
+        }
+        
+        .planet-card {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border-right: 4px solid #667eea;
+        }
+        
+        .planet-name {
+            font-weight: bold;
+            color: #667eea;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+        
+        .planet-info {
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .error-message {
+            background: #fee;
+            color: #c00;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            display: none;
+        }
+        
         @media (max-width: 600px) {
             .container {
                 padding: 20px;
@@ -152,22 +173,22 @@
         
         <form id="chartForm">
             <div class="form-group">
-                <label>الاسم:</label>
+                <label for="name">الاسم:</label>
                 <input type="text" id="name" placeholder="أدخل اسمك" required>
             </div>
             
             <div class="form-group">
-                <label>تاريخ الميلاد:</label>
+                <label for="date">تاريخ الميلاد:</label>
                 <input type="date" id="date" required>
             </div>
             
             <div class="form-group">
-                <label>وقت الميلاد:</label>
+                <label for="time">وقت الميلاد:</label>
                 <input type="time" id="time" required>
             </div>
             
             <div class="form-group">
-                <label>مدينة الميلاد:</label>
+                <label for="city">مدينة الميلاد:</label>
                 <input type="text" id="city" placeholder="مثال: القاهرة، الرياض، دبي" required>
             </div>
             
@@ -179,29 +200,31 @@
             <p>جاري الحساب...</p>
         </div>
         
+        <div class="error-message" id="errorMessage"></div>
+        
         <div id="result"></div>
     </div>
 
     <script>
         // قاموس الترجمة
         const translations = {
-            'Sun': 'الشمس ️',
+            'Sun': 'الشمس ☀️',
             'Moon': 'القمر 🌙',
             'Mercury': 'عطارد ☿️',
             'Venus': 'الزهرة ♀️',
-            'Mars': 'المريخ ️',
+            'Mars': 'المريخ ♂️',
             'Jupiter': 'المشتري ♃',
             'Saturn': 'زحل ♄',
             'Uranus': 'أورانوس ♅',
             'Neptune': 'نبتون ♆',
             'Pluto': 'بلوتو ♇',
-            'Ascendant': 'الصعود ️',
-            'Midheaven': 'وسط السماء 🎯',
-            'Aries': 'الحمل ♈',
-            'Taurus': 'الثور ♉',
+            'Ascendant': 'الصعود ⬆️',
+            'Midheaven': 'وسط السماء ',
+            'Aries': 'الحمل ',
+            'Taurus': 'الثور ',
             'Gemini': 'الجوزاء ♊',
             'Cancer': 'السرطان ♋',
-            'Leo': 'الأسد ',
+            'Leo': 'الأسد ♌',
             'Virgo': 'العذراء ♍',
             'Libra': 'الميزان ♎',
             'Scorpio': 'العقرب ♏',
@@ -230,26 +253,25 @@
             // إظهار التحميل
             document.getElementById('loading').style.display = 'block';
             document.getElementById('result').style.display = 'none';
+            document.getElementById('errorMessage').style.display = 'none';
             document.getElementById('submitBtn').disabled = true;
             
             try {
-                // استدعاء API
+                // بناء URL مع المعاملات
                 const url = `/api/natal_chart?name=${encodeURIComponent(name)}&year=${year}&month=${month}&day=${day}&hour=${hour}&minute=${minute}&city=${encodeURIComponent(city)}`;
                 
                 const response = await fetch(url);
                 const data = await response.json();
                 
-                // عرض النتائج
-                displayResults(data);
+                if (data.success) {
+                    displayResults(data.data);
+                } else {
+                    showError('حدث خطأ في الحساب: ' + data.error);
+                }
                 
             } catch (error) {
                 console.error('Error:', error);
-                document.getElementById('result').innerHTML = `
-                    <div style="color: red; text-align: center; padding: 20px;">
-                        حدث خطأ في الحساب. تأكد من البيانات وحاول مرة أخرى.
-                    </div>
-                `;
-                document.getElementById('result').style.display = 'block';
+                showError('حدث خطأ في الاتصال. تأكد من البيانات وحاول مرة أخرى.');
             } finally {
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('submitBtn').disabled = false;
@@ -316,6 +338,13 @@
             
             // تمرير للنتائج
             resultDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            errorDiv.scrollIntoView({ behavior: 'smooth' });
         }
     </script>
 </body>
