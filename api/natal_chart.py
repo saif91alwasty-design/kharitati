@@ -1,33 +1,36 @@
-from flask import Flask, request, jsonify, Response
+from flask import Flask, request, jsonify
 from kerykeion import AstrologicalSubject
 import json
 
 app = Flask(__name__)
 
+# إعداد CORS
+@app.after_request
+def after_request(response):
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+    return response
+
 @app.route('/api/natal_chart', methods=['GET', 'OPTIONS'])
 def natal_chart():
-    """
-    API endpoint لحساب الخارطة الفلكية
-    """
-    # معالجة CORS preflight
+    # معالجة OPTIONS request
     if request.method == 'OPTIONS':
-        response = Response()
-        response.headers.add('Access-Control-Allow-Origin', '*')
-        response.headers.add('Access-Control-Allow-Headers', '*')
-        response.headers.add('Access-Control-Allow-Methods', 'GET, OPTIONS')
-        return response
+        return '', 200
     
     try:
-        # استخراج المعاملات من URL
+        # استخراج المعاملات
         name = request.args.get('name', 'User')
-        year = int(request.args.get('year', 1990))
-        month = int(request.args.get('month', 1))
-        day = int(request.args.get('day', 1))
-        hour = int(request.args.get('hour', 12))
-        minute = int(request.args.get('minute', 0))
+        year = request.args.get('year', type=int, default=1990)
+        month = request.args.get('month', type=int, default=1)
+        day = request.args.get('day', type=int, default=1)
+        hour = request.args.get('hour', type=int, default=12)
+        minute = request.args.get('minute', type=int, default=0)
         city = request.args.get('city', 'London')
         
-        # حساب الخارطة الفلكية
+        print(f"Calculating chart for: {name}, {year}-{month}-{day} {hour}:{minute}, {city}")
+        
+        # حساب الخارطة
         subject = AstrologicalSubject(
             name=name,
             year=year,
@@ -35,10 +38,11 @@ def natal_chart():
             day=day,
             hour=hour,
             minute=minute,
-            city=city
+            city=city,
+            lng=0,  # سيتم حسابه تلقائياً من اسم المدينة
+            lat=0
         )
         
-        # تجهيز النتائج
         result = {
             'success': True,
             'data': {
@@ -60,25 +64,21 @@ def natal_chart():
                     'sign': subject.midheaven.sign,
                     'degree': round(subject.midheaven.degree, 2)
                 }
-            }
+            },
+            'message': 'Chart calculated successfully'
         }
         
-        # إرجاع النتيجة
-        response = jsonify(result)
-        response.headers.add('Access-Control-Allow-Origin', '*')
-        response.headers.add('Content-Type', 'application/json; charset=utf-8')
-        return response
+        print(f"Result: {json.dumps(result, ensure_ascii=False)}")
+        return jsonify(result)
         
     except Exception as e:
         error_result = {
             'success': False,
-            'error': str(e)
+            'error': str(e),
+            'message': 'Failed to calculate chart'
         }
-        response = jsonify(error_result)
-        response.headers.add('Access-Control-Allow-Origin', '*')
-        response.status_code = 400
-        return response
+        print(f"Error: {str(e)}")
+        return jsonify(error_result), 400
 
-# هذا السطر مهم جداً لـ Vercel!
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
