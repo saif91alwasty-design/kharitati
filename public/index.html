@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حساب الخارطة الفلكية الشخصية</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2em;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        #result {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            display: none;
+        }
+        
+        .planet-card {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border-right: 4px solid #667eea;
+        }
+        
+        .planet-name {
+            font-weight: bold;
+            color: #667eea;
+            font-size: 1.1em;
+        }
+        
+        .planet-info {
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 20px;
+            display: none;
+        }
+        
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            h1 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌟 الخارطة الفلكية الشخصية</h1>
+        <p class="subtitle">اكتشف أسرار شخصيتك من خلال مواقع الكواكب</p>
+        
+        <form id="chartForm">
+            <div class="form-group">
+                <label>الاسم:</label>
+                <input type="text" id="name" placeholder="أدخل اسمك" required>
+            </div>
+            
+            <div class="form-group">
+                <label>تاريخ الميلاد:</label>
+                <input type="date" id="date" required>
+            </div>
+            
+            <div class="form-group">
+                <label>وقت الميلاد:</label>
+                <input type="time" id="time" required>
+            </div>
+            
+            <div class="form-group">
+                <label>مدينة الميلاد:</label>
+                <input type="text" id="city" placeholder="مثال: القاهرة، الرياض، دبي" required>
+            </div>
+            
+            <button type="submit" id="submitBtn">احسب الخارطة الفلكية</button>
+        </form>
+        
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>جاري الحساب...</p>
+        </div>
+        
+        <div id="result"></div>
+    </div>
+
+    <script>
+        // قاموس الترجمة
+        const translations = {
+            'Sun': 'الشمس ️',
+            'Moon': 'القمر 🌙',
+            'Mercury': 'عطارد ☿️',
+            'Venus': 'الزهرة ♀️',
+            'Mars': 'المريخ ️',
+            'Jupiter': 'المشتري ♃',
+            'Saturn': 'زحل ♄',
+            'Uranus': 'أورانوس ♅',
+            'Neptune': 'نبتون ♆',
+            'Pluto': 'بلوتو ♇',
+            'Ascendant': 'الصعود ️',
+            'Midheaven': 'وسط السماء 🎯',
+            'Aries': 'الحمل ♈',
+            'Taurus': 'الثور ♉',
+            'Gemini': 'الجوزاء ♊',
+            'Cancer': 'السرطان ♋',
+            'Leo': 'الأسد ',
+            'Virgo': 'العذراء ♍',
+            'Libra': 'الميزان ♎',
+            'Scorpio': 'العقرب ♏',
+            'Sagittarius': 'القوس ',
+            'Capricorn': 'الجدي ♑',
+            'Aquarius': 'الدلو ♒',
+            'Pisces': 'الحوت ♓'
+        };
+
+        function translate(text) {
+            return translations[text] || text;
+        }
+
+        document.getElementById('chartForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const date = document.getElementById('date').value;
+            const time = document.getElementById('time').value;
+            const city = document.getElementById('city').value;
+            
+            // استخراج السنة والشهر واليوم
+            const [year, month, day] = date.split('-').map(Number);
+            const [hour, minute] = time.split(':').map(Number);
+            
+            // إظهار التحميل
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('result').style.display = 'none';
+            document.getElementById('submitBtn').disabled = true;
+            
+            try {
+                // استدعاء API
+                const url = `/api/natal_chart?name=${encodeURIComponent(name)}&year=${year}&month=${month}&day=${day}&hour=${hour}&minute=${minute}&city=${encodeURIComponent(city)}`;
+                
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                // عرض النتائج
+                displayResults(data);
+                
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('result').innerHTML = `
+                    <div style="color: red; text-align: center; padding: 20px;">
+                        حدث خطأ في الحساب. تأكد من البيانات وحاول مرة أخرى.
+                    </div>
+                `;
+                document.getElementById('result').style.display = 'block';
+            } finally {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('submitBtn').disabled = false;
+            }
+        });
+
+        function displayResults(data) {
+            const resultDiv = document.getElementById('result');
+            
+            let html = '<h2 style="margin-bottom: 20px; color: #333;">نتائج الخارطة الفلكية</h2>';
+            
+            if (data.sun) {
+                html += `
+                    <div class="planet-card">
+                        <div class="planet-name">${translate('Sun')}</div>
+                        <div class="planet-info">
+                            البرج: ${translate(data.sun.sign)}<br>
+                            الدرجة: ${data.sun.degree}°<br>
+                            ${data.sun.house ? `البيت: ${data.sun.house}` : ''}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            if (data.moon) {
+                html += `
+                    <div class="planet-card">
+                        <div class="planet-name">${translate('Moon')}</div>
+                        <div class="planet-info">
+                            البرج: ${translate(data.moon.sign)}<br>
+                            الدرجة: ${data.moon.degree}°<br>
+                            ${data.moon.house ? `البيت: ${data.moon.house}` : ''}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            if (data.ascendant) {
+                html += `
+                    <div class="planet-card">
+                        <div class="planet-name">${translate('Ascendant')}</div>
+                        <div class="planet-info">
+                            البرج: ${translate(data.ascendant.sign)}<br>
+                            الدرجة: ${data.ascendant.degree}°
+                        </div>
+                    </div>
+                `;
+            }
+            
+            if (data.midheaven) {
+                html += `
+                    <div class="planet-card">
+                        <div class="planet-name">${translate('Midheaven')}</div>
+                        <div class="planet-info">
+                            البرج: ${translate(data.midheaven.sign)}<br>
+                            الدرجة: ${data.midheaven.degree}°
+                        </div>
+                    </div>
+                `;
+            }
+            
+            resultDiv.innerHTML = html;
+            resultDiv.style.display = 'block';
+            
+            // تمرير للنتائج
+            resultDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
