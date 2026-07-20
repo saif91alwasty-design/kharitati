@@ -1,26 +1,33 @@
+from flask import Flask, request, jsonify, Response
 from kerykeion import AstrologicalSubject
 import json
 
-def handler(request):
+app = Flask(__name__)
+
+@app.route('/api/natal_chart', methods=['GET', 'OPTIONS'])
+def natal_chart():
     """
-    Vercel Python Serverless Function Handler
-    لحساب الخارطة الفلكية الشخصية
+    API endpoint لحساب الخارطة الفلكية
     """
-    
-    # استخراج المعاملات من URL
-    query_params = request.args
+    # معالجة CORS preflight
+    if request.method == 'OPTIONS':
+        response = Response()
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        response.headers.add('Access-Control-Allow-Headers', '*')
+        response.headers.add('Access-Control-Allow-Methods', 'GET, OPTIONS')
+        return response
     
     try:
-        # الحصول على البيانات من الطلب
-        name = query_params.get('name', 'User')
-        year = int(query_params.get('year', 1990))
-        month = int(query_params.get('month', 1))
-        day = int(query_params.get('day', 1))
-        hour = int(query_params.get('hour', 12))
-        minute = int(query_params.get('minute', 0))
-        city = query_params.get('city', 'London')
+        # استخراج المعاملات من URL
+        name = request.args.get('name', 'User')
+        year = int(request.args.get('year', 1990))
+        month = int(request.args.get('month', 1))
+        day = int(request.args.get('day', 1))
+        hour = int(request.args.get('hour', 12))
+        minute = int(request.args.get('minute', 0))
+        city = request.args.get('city', 'London')
         
-        # حساب الخارطة الفلكية باستخدام Kerykeion
+        # حساب الخارطة الفلكية
         subject = AstrologicalSubject(
             name=name,
             year=year,
@@ -56,30 +63,22 @@ def handler(request):
             }
         }
         
-        # إرجاع النتيجة كـ JSON
-        from flask import Response
-        return Response(
-            json.dumps(result, ensure_ascii=False, default=str),
-            status=200,
-            mimetype='application/json',
-            headers={
-                'Access-Control-Allow-Origin': '*',
-                'Content-Type': 'application/json; charset=utf-8'
-            }
-        )
+        # إرجاع النتيجة
+        response = jsonify(result)
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        response.headers.add('Content-Type', 'application/json; charset=utf-8')
+        return response
         
     except Exception as e:
-        # معالجة الأخطاء
-        from flask import Response
         error_result = {
             'success': False,
             'error': str(e)
         }
-        return Response(
-            json.dumps(error_result, ensure_ascii=False),
-            status=400,
-            mimetype='application/json',
-            headers={
-                'Access-Control-Allow-Origin': '*'
-            }
-        )
+        response = jsonify(error_result)
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        response.status_code = 400
+        return response
+
+# هذا السطر مهم جداً لـ Vercel!
+if __name__ == '__main__':
+    app.run()
