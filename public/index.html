@@ -3,14 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>حساب الخارطة الفلكية الشخصية مجاناً</title>
+    <title>حساب الخارطة الفلكية الشخصية مجاناً | خريطتي</title>
     <meta name="description" content="احسب خارطتك الفلكية الشخصية مجاناً. اعرف مواقع الكواكب، البرج، الصعود، والتحليل الفلكي الدقيق.">
-    <meta name="keywords" content="خارطة فلكية, أبراج, تنجيم, حساب البرج, الكواكب, علم الفلك">
+    <meta name="keywords" content="خارطة فلكية, أبراج, تنجيم, حساب البرج, الكواكب, علم الفلك, astrology">
+    <meta name="author" content="Kharitati">
     
     <!-- Open Graph -->
     <meta property="og:title" content="حساب الخارطة الفلكية الشخصية">
-    <meta property="og:description" content="اكتشف أسرار شخصيتك من خلال خارطتك الفلكية">
+    <meta property="og:description" content="اكتشف أسرار شخصيتك من خلال خارطتك الفلكية - مجاناً">
     <meta property="og:type" content="website">
+    <meta property="og:locale" content="ar_SA">
     
     <style>
         * {
@@ -20,10 +22,11 @@
         }
         
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Tahoma, 'Arial', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 20px;
+            color: #333;
         }
         
         .container {
@@ -31,21 +34,23 @@
             margin: 0 auto;
             background: white;
             padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
         }
         
         h1 {
-            text-align: center;
-            color: #333;
+            color: #4a3b7a;
+            font-size: 2.2em;
             margin-bottom: 10px;
-            font-size: 2em;
         }
         
         .subtitle {
-            text-align: center;
             color: #666;
-            margin-bottom: 30px;
             font-size: 1.1em;
         }
         
@@ -57,61 +62,63 @@
             display: block;
             margin-bottom: 8px;
             font-weight: bold;
-            color: #555;
+            color: #4a3b7a;
+            font-size: 1.1em;
         }
         
         input {
             width: 100%;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
+            padding: 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
             font-size: 16px;
+            transition: all 0.3s;
         }
         
         input:focus {
             outline: none;
             border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
         
         button {
             width: 100%;
-            padding: 15px;
+            padding: 16px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 18px;
             font-weight: bold;
             cursor: pointer;
             margin-top: 10px;
-            transition: transform 0.2s;
+            transition: all 0.3s;
         }
         
-        button:hover {
+        button:hover:not(:disabled) {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
         }
         
         button:disabled {
             opacity: 0.6;
             cursor: not-allowed;
-            transform: none;
         }
         
         .loading {
             text-align: center;
-            padding: 20px;
+            padding: 30px;
             display: none;
         }
         
         .spinner {
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #667eea;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
             border-radius: 50%;
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
             animation: spin 1s linear infinite;
-            margin: 0 auto 10px;
+            margin: 0 auto 15px;
         }
         
         @keyframes spin {
@@ -121,39 +128,95 @@
         
         #result {
             margin-top: 30px;
-            padding: 20px;
-            background: #f8f9fa;
-            border-radius: 10px;
             display: none;
         }
         
+        .result-header {
+            text-align: center;
+            color: #4a3b7a;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+        
         .planet-card {
-            background: white;
-            padding: 15px;
-            margin: 10px 0;
-            border-radius: 8px;
-            border-right: 4px solid #667eea;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
+            padding: 18px;
+            margin: 12px 0;
+            border-radius: 12px;
+            border-right: 5px solid #667eea;
+            transition: transform 0.2s;
+        }
+        
+        .planet-card:hover {
+            transform: translateX(-5px);
         }
         
         .planet-name {
             font-weight: bold;
-            color: #667eea;
-            font-size: 1.1em;
-            margin-bottom: 5px;
+            color: #4a3b7a;
+            font-size: 1.2em;
+            margin-bottom: 8px;
         }
         
         .planet-info {
-            color: #666;
-            line-height: 1.6;
+            color: #555;
+            line-height: 1.8;
+        }
+        
+        .planet-info span {
+            display: inline-block;
+            margin-left: 15px;
         }
         
         .error-message {
             background: #fee;
             color: #c00;
             padding: 15px;
-            border-radius: 8px;
+            border-radius: 10px;
             margin-top: 20px;
             display: none;
+            border-right: 4px solid #c00;
+        }
+        
+        .info-box {
+            background: #e3f2fd;
+            color: #1565c0;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border-right: 4px solid #1565c0;
+            display: none;
+        }
+        
+        .share-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .share-btn {
+            flex: 1;
+            min-width: 120px;
+            padding: 10px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            color: white;
+            text-decoration: none;
+            text-align: center;
+        }
+        
+        .share-twitter { background: #1da1f2; }
+        .share-whatsapp { background: #25d366; }
+        .share-facebook { background: #4267b2; }
+        
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #666;
+            font-size: 0.9em;
         }
         
         @media (max-width: 600px) {
@@ -161,15 +224,17 @@
                 padding: 20px;
             }
             h1 {
-                font-size: 1.5em;
+                font-size: 1.6em;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🌟 الخارطة الفلكية الشخصية</h1>
-        <p class="subtitle">اكتشف أسرار شخصيتك من خلال مواقع الكواكب</p>
+        <header>
+            <h1> الخارطة الفلكية الشخصية</h1>
+            <p class="subtitle">اكتشف أسرار شخصيتك من خلال مواقع الكواكب عند ميلادك</p>
+        </header>
         
         <form id="chartForm">
             <div class="form-group">
@@ -189,7 +254,8 @@
             
             <div class="form-group">
                 <label for="city">مدينة الميلاد:</label>
-                <input type="text" id="city" placeholder="مثال: القاهرة، الرياض، دبي" required>
+                <input type="text" id="city" placeholder="مثال: Cairo, Riyadh, Dubai, Kuwait" required>
+                <small style="color: #666; display: block; margin-top: 5px;"> يُفضّل كتابة اسم المدينة بالإنجليزية للحصول على دقة أعلى</small>
             </div>
             
             <button type="submit" id="submitBtn">احسب الخارطة الفلكية</button>
@@ -197,12 +263,19 @@
         
         <div class="loading" id="loading">
             <div class="spinner"></div>
-            <p>جاري الحساب...</p>
+            <p>جاري حساب الخارطة الفلكية... قد يستغرق بضع ثوانٍ</p>
         </div>
         
         <div class="error-message" id="errorMessage"></div>
         
+        <div class="info-box" id="infoBox"></div>
+        
         <div id="result"></div>
+        
+        <footer>
+            <p>🌙 خريطتي - حساب الخوارط الفلكية بدقة علمية</p>
+            <p style="margin-top: 10px;">جميع الحسابات مبنية على بيانات NASA الفلكية</p>
+        </footer>
     </div>
 
     <script>
@@ -217,61 +290,90 @@
             'Saturn': 'زحل ♄',
             'Uranus': 'أورانوس ♅',
             'Neptune': 'نبتون ♆',
-            'Pluto': 'بلوتو ♇',
-            'Ascendant': 'الصعود ⬆️',
-            'Midheaven': 'وسط السماء ',
-            'Aries': 'الحمل ',
-            'Taurus': 'الثور ',
+            'Pluto': 'بلوتو ',
+            'Ascendant': 'الصعود ️',
+            'Midheaven': 'وسط السماء 🎯',
+            'North Node': 'العقدة الشمالية ☊',
+            'South Node': 'العقدة الجنوبية ☋',
+            'Chiron': 'كيرون',
+            'Aries': 'الحمل ♈',
+            'Taurus': 'الثور ♉',
             'Gemini': 'الجوزاء ♊',
             'Cancer': 'السرطان ♋',
             'Leo': 'الأسد ♌',
             'Virgo': 'العذراء ♍',
             'Libra': 'الميزان ♎',
             'Scorpio': 'العقرب ♏',
-            'Sagittarius': 'القوس ',
+            'Sagittarius': 'القوس ♐',
             'Capricorn': 'الجدي ♑',
             'Aquarius': 'الدلو ♒',
             'Pisces': 'الحوت ♓'
         };
 
         function translate(text) {
+            if (!text) return 'غير محدد';
             return translations[text] || text;
         }
 
+        // معالجة إرسال النموذج
         document.getElementById('chartForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            const name = document.getElementById('name').value;
+            const name = document.getElementById('name').value.trim();
             const date = document.getElementById('date').value;
             const time = document.getElementById('time').value;
-            const city = document.getElementById('city').value;
+            const city = document.getElementById('city').value.trim();
+            
+            if (!name || !date || !time || !city) {
+                showError('يرجى ملء جميع الحقول');
+                return;
+            }
             
             // استخراج السنة والشهر واليوم
             const [year, month, day] = date.split('-').map(Number);
             const [hour, minute] = time.split(':').map(Number);
             
+            console.log('📊 بيانات الحساب:', { name, year, month, day, hour, minute, city });
+            
             // إظهار التحميل
             document.getElementById('loading').style.display = 'block';
             document.getElementById('result').style.display = 'none';
             document.getElementById('errorMessage').style.display = 'none';
+            document.getElementById('infoBox').style.display = 'none';
             document.getElementById('submitBtn').disabled = true;
             
             try {
                 // بناء URL مع المعاملات
-                const url = `/api/natal_chart?name=${encodeURIComponent(name)}&year=${year}&month=${month}&day=${day}&hour=${hour}&minute=${minute}&city=${encodeURIComponent(city)}`;
+                const apiUrl = `/api/natal_chart?name=${encodeURIComponent(name)}&year=${year}&month=${month}&day=${day}&hour=${hour}&minute=${minute}&city=${encodeURIComponent(city)}`;
                 
-                const response = await fetch(url);
+                console.log('🔗 استدعاء API:', apiUrl);
+                
+                const response = await fetch(apiUrl, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                    }
+                });
+                
+                console.log('📡 حالة الاستجابة:', response.status);
+                
+                if (!response.ok) {
+                    throw new Error(`خطأ في الخادم: ${response.status}`);
+                }
+                
                 const data = await response.json();
+                console.log('✅ البيانات المستلمة:', data);
                 
-                if (data.success) {
+                if (data.success && data.data) {
                     displayResults(data.data);
+                    showInfo('✨ تم حساب الخارطة الفلكية بنجاح!');
                 } else {
-                    showError('حدث خطأ في الحساب: ' + data.error);
+                    throw new Error(data.error || 'حدث خطأ غير معروف في الحساب');
                 }
                 
             } catch (error) {
-                console.error('Error:', error);
-                showError('حدث خطأ في الاتصال. تأكد من البيانات وحاول مرة أخرى.');
+                console.error('❌ خطأ:', error);
+                showError('حدث خطأ في الاتصال: ' + error.message + '. تأكد من البيانات وحاول مرة أخرى.');
             } finally {
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('submitBtn').disabled = false;
@@ -281,41 +383,34 @@
         function displayResults(data) {
             const resultDiv = document.getElementById('result');
             
-            let html = '<h2 style="margin-bottom: 20px; color: #333;">نتائج الخارطة الفلكية</h2>';
+            let html = '<h2 class="result-header">🌟 نتائج الخارطة الفلكية</h2>';
             
-            if (data.sun) {
-                html += `
-                    <div class="planet-card">
-                        <div class="planet-name">${translate('Sun')}</div>
-                        <div class="planet-info">
-                            البرج: ${translate(data.sun.sign)}<br>
-                            الدرجة: ${data.sun.degree}°<br>
-                            ${data.sun.house ? `البيت: ${data.sun.house}` : ''}
+            // الكواكب الأساسية
+            const planets = ['sun', 'moon', 'mercury', 'venus', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune', 'pluto'];
+            
+            planets.forEach(planet => {
+                if (data[planet]) {
+                    html += `
+                        <div class="planet-card">
+                            <div class="planet-name">${translate(planet)}</div>
+                            <div class="planet-info">
+                                <span>🌟 البرج: <strong>${translate(data[planet].sign)}</strong></span>
+                                <span>📐 الدرجة: ${data[planet].degree}°</span>
+                                ${data[planet].house ? `<span>🏠 البيت: ${data[planet].house}</span>` : ''}
+                            </div>
                         </div>
-                    </div>
-                `;
-            }
+                    `;
+                }
+            });
             
-            if (data.moon) {
-                html += `
-                    <div class="planet-card">
-                        <div class="planet-name">${translate('Moon')}</div>
-                        <div class="planet-info">
-                            البرج: ${translate(data.moon.sign)}<br>
-                            الدرجة: ${data.moon.degree}°<br>
-                            ${data.moon.house ? `البيت: ${data.moon.house}` : ''}
-                        </div>
-                    </div>
-                `;
-            }
-            
+            // الصعود ووسط السماء
             if (data.ascendant) {
                 html += `
-                    <div class="planet-card">
+                    <div class="planet-card" style="border-right-color: #764ba2;">
                         <div class="planet-name">${translate('Ascendant')}</div>
                         <div class="planet-info">
-                            البرج: ${translate(data.ascendant.sign)}<br>
-                            الدرجة: ${data.ascendant.degree}°
+                            <span>🌟 البرج: <strong>${translate(data.ascendant.sign)}</strong></span>
+                            <span>📐 الدرجة: ${data.ascendant.degree}°</span>
                         </div>
                     </div>
                 `;
@@ -323,29 +418,51 @@
             
             if (data.midheaven) {
                 html += `
-                    <div class="planet-card">
+                    <div class="planet-card" style="border-right-color: #f093fb;">
                         <div class="planet-name">${translate('Midheaven')}</div>
                         <div class="planet-info">
-                            البرج: ${translate(data.midheaven.sign)}<br>
-                            الدرجة: ${data.midheaven.degree}°
+                            <span>🌟 البرج: <strong>${translate(data.midheaven.sign)}</strong></span>
+                            <span>📐 الدرجة: ${data.midheaven.degree}°</span>
                         </div>
                     </div>
                 `;
             }
             
+            // أزرار المشاركة
+            html += `
+                <div class="share-buttons">
+                    <a href="https://twitter.com/intent/tweet?text=حسبت خريطتي الفلكية!&url=${window.location.href}" 
+                       target="_blank" class="share-btn share-twitter">🐦 تويتر</a>
+                    <a href="https://wa.me/?text=حسبت خريطتي الفلكية! ${window.location.href}" 
+                       target="_blank" class="share-btn share-whatsapp">💬 واتساب</a>
+                    <a href="https://www.facebook.com/sharer/sharer.php?u=${window.location.href}" 
+                       target="_blank" class="share-btn share-facebook">📘 فيسبوك</a>
+                </div>
+            `;
+            
             resultDiv.innerHTML = html;
             resultDiv.style.display = 'block';
             
             // تمرير للنتائج
-            resultDiv.scrollIntoView({ behavior: 'smooth' });
+            resultDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
         function showError(message) {
             const errorDiv = document.getElementById('errorMessage');
-            errorDiv.textContent = message;
+            errorDiv.textContent = '⚠️ ' + message;
             errorDiv.style.display = 'block';
-            errorDiv.scrollIntoView({ behavior: 'smooth' });
+            errorDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
+
+        function showInfo(message) {
+            const infoDiv = document.getElementById('infoBox');
+            infoDiv.textContent = message;
+            infoDiv.style.display = 'block';
+        }
+
+        // رسالة ترحيبية في Console
+        console.log('%c🌟 مرحباً بك في خريطتي!', 'color: #667eea; font-size: 20px; font-weight: bold;');
+        console.log('%cلمساعدة في التشخيص، افتح Console وشاهد الرسائل', 'color: #666;');
     </script>
 </body>
 </html>
