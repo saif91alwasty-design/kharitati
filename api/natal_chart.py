@@ -1,15 +1,16 @@
 from flask import Flask, request, jsonify
 import traceback
+from datetime import datetime
 
 app = Flask(__name__)
 
-# قاعدة بيانات المدن مع الإحداثيات ومنطقة الزمن (مهم جداً لـ online=False)
+# قاعدة بيانات المدن العربية مع الإحداثيات ومنطقة الزمن
 CITIES_DB = {
     'baghdad': {'lat': 33.3152, 'lng': 44.3661, 'name': 'بغداد', 'tz': 'Asia/Baghdad'},
     'basra': {'lat': 30.5081, 'lng': 47.7835, 'name': 'البصرة', 'tz': 'Asia/Baghdad'},
     'mosul': {'lat': 36.3450, 'lng': 43.1309, 'name': 'الموصل', 'tz': 'Asia/Baghdad'},
     'erbil': {'lat': 36.1911, 'lng': 44.0093, 'name': 'أربيل', 'tz': 'Asia/Baghdad'},
-    'najaf': {'lat': 31.9996, 'lng': 44.3201, 'name': 'النجف', 'tz': 'Asia/Baghdad'},
+    'najaf': {'lat': 32.0000, 'lng': 44.3333, 'name': 'النجف', 'tz': 'Asia/Baghdad'},
     'karbala': {'lat': 32.6160, 'lng': 44.0241, 'name': 'كربلاء', 'tz': 'Asia/Baghdad'},
     'kut': {'lat': 32.5109, 'lng': 45.8181, 'name': 'الكوت', 'tz': 'Asia/Baghdad'},
     'nasiriyah': {'lat': 31.0571, 'lng': 46.2637, 'name': 'الناصرية', 'tz': 'Asia/Baghdad'},
@@ -55,20 +56,41 @@ def natal_chart():
         return '', 200
     
     try:
+        # استخراج المعاملات مع التحقق
         name = request.args.get('name', 'User')
-        year = int(request.args.get('year', 1990))
-        month = int(request.args.get('month', 1))
-        day = int(request.args.get('day', 1))
-        hour = int(request.args.get('hour', 12))
-        minute = int(request.args.get('minute', 0))
+        
+        # تحويل التاريخ بشكل آمن
+        try:
+            year = int(request.args.get('year', 1990))
+            month = int(request.args.get('month', 1))
+            day = int(request.args.get('day', 1))
+            hour = int(request.args.get('hour', 12))
+            minute = int(request.args.get('minute', 0))
+        except (ValueError, TypeError) as e:
+            return jsonify({
+                'success': False,
+                'error': 'تاريخ أو وقت غير صحيح'
+            }), 400
+        
         city_key = request.args.get('city', 'baghdad').lower().strip()
         
-        city_data = CITIES_DB.get(city_key, CITIES_DB['baghdad'])
+        # البحث عن المدينة
+        city_data = CITIES_DB.get(city_key)
+        if not city_data:
+            city_data = CITIES_DB['baghdad']
         
-        # استيراد المكتبة
-        from kerykeion import AstrologicalSubject
+        print(f"📊 Calculating for: {name}, {year}-{month}-{day} {hour}:{minute}, {city_data['name']}")
         
-        # الحل السحري: online=False يمنع محاولة الكتابة على القرص الصلب في Vercel
+        # استيراد Kerykeion
+        try:
+            from kerykeion import AstrologicalSubject
+        except ImportError as e:
+            return jsonify({
+                'success': False,
+                'error': f'Failed to import Kerykeion: {str(e)}'
+            }), 500
+        
+        # حساب الخارطة مع online=False
         subject = AstrologicalSubject(
             name=name,
             year=year,
@@ -80,31 +102,69 @@ def natal_chart():
             lat=city_data['lat'],
             lng=city_data['lng'],
             tz_str=city_data['tz'],
-            online=False  # هذا السطر هو ما يحل مشكلة Vercel نهائياً!
+            online=False
         )
         
+        # تجهيز النتائج
         result = {
             'success': True,
             'data': {
-                'sun': {'sign': subject.sun.sign, 'degree': round(float(subject.sun.degree), 2), 'house': getattr(subject.sun, 'house', None)},
-                'moon': {'sign': subject.moon.sign, 'degree': round(float(subject.moon.degree), 2), 'house': getattr(subject.moon, 'house', None)},
-                'mercury': {'sign': subject.mercury.sign, 'degree': round(float(subject.mercury.degree), 2)},
-                'venus': {'sign': subject.venus.sign, 'degree': round(float(subject.venus.degree), 2)},
-                'mars': {'sign': subject.mars.sign, 'degree': round(float(subject.mars.degree), 2)},
-                'jupiter': {'sign': subject.jupiter.sign, 'degree': round(float(subject.jupiter.degree), 2)},
-                'saturn': {'sign': subject.saturn.sign, 'degree': round(float(subject.saturn.degree), 2)},
-                'ascendant': {'sign': subject.ascendant.sign, 'degree': round(float(subject.ascendant.degree), 2)},
-                'midheaven': {'sign': subject.midheaven.sign, 'degree': round(float(subject.midheaven.degree), 2)}
+                'sun': {
+                    'sign': subject.sun.sign,
+                    'degree': round(float(subject.sun.degree), 2),
+                    'house': int(subject.sun.house) if hasattr(subject.sun, 'house') and subject.sun.house else None
+                },
+                'moon': {
+                    'sign': subject.moon.sign,
+                    'degree': round(float(subject.moon.degree), 2),
+                    'house': int(subject.moon.house) if hasattr(subject.moon, 'house') and subject.moon.house else None
+                },
+                'mercury': {
+                    'sign': subject.mercury.sign,
+                    'degree': round(float(subject.mercury.degree), 2)
+                },
+                'venus': {
+                    'sign': subject.venus.sign,
+                    'degree': round(float(subject.venus.degree), 2)
+                },
+                'mars': {
+                    'sign': subject.mars.sign,
+                    'degree': round(float(subject.mars.degree), 2)
+                },
+                'jupiter': {
+                    'sign': subject.jupiter.sign,
+                    'degree': round(float(subject.jupiter.degree), 2)
+                },
+                'saturn': {
+                    'sign': subject.saturn.sign,
+                    'degree': round(float(subject.saturn.degree), 2)
+                },
+                'ascendant': {
+                    'sign': subject.ascendant.sign,
+                    'degree': round(float(subject.ascendant.degree), 2)
+                },
+                'midheaven': {
+                    'sign': subject.midheaven.sign,
+                    'degree': round(float(subject.midheaven.degree), 2)
+                }
             },
-            'city_used': city_data['name']
+            'city_used': city_data['name'],
+            'coordinates': {'lat': city_data['lat'], 'lng': city_data['lng']}
         }
         
+        print(f"✅ Success! Sun in {result['data']['sun']['sign']}")
         return jsonify(result)
         
     except Exception as e:
         error_trace = traceback.format_exc()
-        print(f"ERROR: {str(e)}\n{error_trace}")
-        return jsonify({'success': False, 'error': str(e)}), 500
+        print(f"❌ ERROR: {str(e)}")
+        print(error_trace)
+        
+        return jsonify({
+            'success': False,
+            'error': str(e),
+            'debug': 'Check Vercel logs for details'
+        }), 500
 
 if __name__ == '__main__':
     app.run(debug=True)
