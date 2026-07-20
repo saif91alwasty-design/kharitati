@@ -1,21 +1,34 @@
 from kerykeion import AstrologicalSubject
 import json
 
-def handler(event, context):
-    # GET request
-    if 'queryStringParameters' in event:
-        query = event['queryStringParameters']
+def handler(request):
+    """
+    Vercel Python Serverless Function
+    """
+    # GET request - استخراج المعاملات من URL
+    query_params = request.args
+    
+    try:
+        name = query_params.get('name', 'User')
+        year = int(query_params.get('year', 1990))
+        month = int(query_params.get('month', 1))
+        day = int(query_params.get('day', 1))
+        hour = int(query_params.get('hour', 12))
+        minute = int(query_params.get('minute', 0))
+        city = query_params.get('city', 'London')
         
+        # حساب الخارطة الفلكية
         subject = AstrologicalSubject(
-            name=query.get('name', 'User'),
-            year=int(query.get('year', 1990)),
-            month=int(query.get('month', 1)),
-            day=int(query.get('day', 1)),
-            hour=int(query.get('hour', 12)),
-            minute=int(query.get('minute', 0)),
-            city=query.get('city', 'London')
+            name=name,
+            year=year,
+            month=month,
+            day=day,
+            hour=hour,
+            minute=minute,
+            city=city
         )
         
+        # تجهيز النتائج
         result = {
             'sun': {
                 'sign': subject.sun.sign,
@@ -37,16 +50,21 @@ def handler(event, context):
             }
         }
         
-        return {
-            'statusCode': 200,
-            'headers': {
-                'Content-Type': 'application/json',
+        # إرجاع النتيجة كـ JSON
+        from flask import Response
+        return Response(
+            json.dumps(result, ensure_ascii=False),
+            status=200,
+            mimetype='application/json',
+            headers={
                 'Access-Control-Allow-Origin': '*'
-            },
-            'body': json.dumps(result, ensure_ascii=False)
-        }
-    
-    return {
-        'statusCode': 400,
-        'body': json.dumps({'error': 'Invalid request'})
-    }
+            }
+        )
+        
+    except Exception as e:
+        from flask import Response
+        return Response(
+            json.dumps({'error': str(e)}),
+            status=400,
+            mimetype='application/json'
+        )
