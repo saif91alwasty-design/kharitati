@@ -66,16 +66,17 @@
             font-size: 1.1em;
         }
         
-        input {
+        input, select {
             width: 100%;
             padding: 14px;
             border: 2px solid #e0e0e0;
             border-radius: 10px;
             font-size: 16px;
             transition: all 0.3s;
+            background: white;
         }
         
-        input:focus {
+        input:focus, select:focus {
             outline: none;
             border-color: #667eea;
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
@@ -232,7 +233,7 @@
 <body>
     <div class="container">
         <header>
-            <h1> الخارطة الفلكية الشخصية</h1>
+            <h1>🌟 الخارطة الفلكية الشخصية</h1>
             <p class="subtitle">اكتشف أسرار شخصيتك من خلال مواقع الكواكب عند ميلادك</p>
         </header>
         
@@ -254,8 +255,138 @@
             
             <div class="form-group">
                 <label for="city">مدينة الميلاد:</label>
-                <input type="text" id="city" placeholder="مثال: Cairo, Riyadh, Dubai, Kuwait" required>
-                <small style="color: #666; display: block; margin-top: 5px;"> يُفضّل كتابة اسم المدينة بالإنجليزية للحصول على دقة أعلى</small>
+                <select id="city" required>
+                    <option value="">-- اختر المدينة --</option>
+                    
+                    <optgroup label="🇮🇶 العراق">
+                        <option value="baghdad">بغداد</option>
+                        <option value="basra">البصرة</option>
+                        <option value="mosul">الموصل</option>
+                        <option value="erbil">أربيل</option>
+                        <option value="najaf">النجف</option>
+                        <option value="karbala">كربلاء</option>
+                        <option value="kut">الكوت</option>
+                        <option value="nasiriyah">الناصرية</option>
+                        <option value="amara">العمارة</option>
+                        <option value="diwaniyah">الديوانية</option>
+                        <option value="hillah">الحلة</option>
+                        <option value="ramadi">الرمادي</option>
+                        <option value="fallujah">الفلوجة</option>
+                        <option value="samarra">سامراء</option>
+                        <option value="tikrit">تكريت</option>
+                        <option value="duhok">دهوك</option>
+                        <option value="sulaymaniyah">السليمانية</option>
+                        <option value="kirkuk">كركوك</option>
+                    </optgroup>
+                    
+                    <optgroup label="🇸 السعودية">
+                        <option value="riyadh">الرياض</option>
+                        <option value="jeddah">جدة</option>
+                        <option value="mecca">مكة المكرمة</option>
+                        <option value="medina">المدينة المنورة</option>
+                        <option value="dammam">الدمام</option>
+                        <option value="khobar">الخبر</option>
+                        <option value="tabuk">تبوك</option>
+                        <option value="abha">أبها</option>
+                    </optgroup>
+                    
+                    <optgroup label="🇦🇪 الإمارات">
+                        <option value="dubai">دبي</option>
+                        <option value="abu dhabi">أبوظبي</option>
+                        <option value="sharjah">الشارقة</option>
+                        <option value="ajman">عجمان</option>
+                    </optgroup>
+                    
+                    <optgroup label="🇪🇬 مصر">
+                        <option value="cairo">القاهرة</option>
+                        <option value="alexandria">الإسكندرية</option>
+                        <option value="giza">الجيزة</option>
+                        <option value="luxor">الأقصر</option>
+                        <option value="aswan">أسوان</option>
+                    </optgroup>
+                    
+                    <optgroup label="🇯🇴 الأردن">
+                        <option value="amman">عمّان</option>
+                        <option value="zarqa">الزرقاء</option>
+                        <option value="aqaba">العقبة</option>
+                    </optgroup>
+                    
+                    <optgroup label="🇰🇼 الكويت">
+                        <option value="kuwait">الكويت</option>
+                    </optgroup>
+                    
+                    <optgroup label="🇶🇦 قطر">
+                        <option value="doha">الدوحة</option>
+                    </optgroup>
+                    
+                    <optgroup label="🇧🇭 البحرين">
+                        <option value="manama">المنامة</option>
+                    </optgroup>
+                    
+                    <optgroup label="🇴🇲 عُمان">
+                        <option value="muscat">مسقط</option>
+                        <option value="salalah">صلالة</option>
+                    </optgroup>
+                    
+                    <optgroup label="🇲🇦 المغرب">
+                        <option value="rabat">الرباط</option>
+                        <option value="casablanca">الدار البيضاء</option>
+                        <option value="marrakech">مراكش</option>
+                        <option value="fes">فاس</option>
+                    </optgroup>
+                    
+                    <optgroup label="🇹🇳 تونس">
+                        <option value="tunis">تونس</option>
+                        <option value="sousse">سوسة</option>
+                    </optgroup>
+                    
+                    <optgroup label="🇩🇿 الجزائر">
+                        <option value="algiers">الجزائر</option>
+                        <option value="oran">وهران</option>
+                    </optgroup>
+                    
+                    <optgroup label="🇱🇧 لبنان">
+                        <option value="beirut">بيروت</option>
+                        <option value="tripoli">طرابلس</option>
+                    </optgroup>
+                    
+                    <optgroup label="🇸🇾 سوريا">
+                        <option value="damascus">دمشق</option>
+                        <option value="aleppo">حلب</option>
+                    </optgroup>
+                    
+                    <optgroup label="🇵🇸 فلسطين">
+                        <option value="jerusalem">القدس</option>
+                        <option value="gaza">غزة</option>
+                        <option value="ramallah">رام الله</option>
+                    </optgroup>
+                    
+                    <optgroup label="🇾🇪 اليمن">
+                        <option value="sanaa">صنعاء</option>
+                        <option value="aden">عدن</option>
+                    </optgroup>
+                    
+                    <optgroup label="🇱 ليبيا">
+                        <option value="tripoli libya">طرابلس</option>
+                        <option value="benghazi">بنغازي</option>
+                    </optgroup>
+                    
+                    <optgroup label="🇸🇩 السودان">
+                        <option value="khartoum">الخرطوم</option>
+                    </optgroup>
+                    
+                    <optgroup label="🌍 مدن عالمية">
+                        <option value="london">لندن</option>
+                        <option value="paris">باريس</option>
+                        <option value="new york">نيويورك</option>
+                        <option value="los angeles">لوس أنجلوس</option>
+                        <option value="istanbul">إسطنبول</option>
+                        <option value="berlin">برلين</option>
+                        <option value="moscow">موسكو</option>
+                        <option value="tokyo">طوكيو</option>
+                    </optgroup>
+                </select>
+                <small style="color: #666; display: block; margin-top: 5px;">اختر مدينة ميلادك من القائمة</small>
             </div>
             
             <button type="submit" id="submitBtn">احسب الخارطة الفلكية</button>
@@ -290,9 +421,9 @@
             'Saturn': 'زحل ♄',
             'Uranus': 'أورانوس ♅',
             'Neptune': 'نبتون ♆',
-            'Pluto': 'بلوتو ',
-            'Ascendant': 'الصعود ️',
-            'Midheaven': 'وسط السماء 🎯',
+            'Pluto': 'بلوتو ♇',
+            'Ascendant': 'الصعود ⬆️',
+            'Midheaven': 'وسط السماء ',
             'North Node': 'العقدة الشمالية ☊',
             'South Node': 'العقدة الجنوبية ☋',
             'Chiron': 'كيرون',
@@ -322,7 +453,7 @@
             const name = document.getElementById('name').value.trim();
             const date = document.getElementById('date').value;
             const time = document.getElementById('time').value;
-            const city = document.getElementById('city').value.trim();
+            const city = document.getElementById('city').value;
             
             if (!name || !date || !time || !city) {
                 showError('يرجى ملء جميع الحقول');
@@ -333,7 +464,7 @@
             const [year, month, day] = date.split('-').map(Number);
             const [hour, minute] = time.split(':').map(Number);
             
-            console.log('📊 بيانات الحساب:', { name, year, month, day, hour, minute, city });
+            console.log(' بيانات الحساب:', { name, year, month, day, hour, minute, city });
             
             // إظهار التحميل
             document.getElementById('loading').style.display = 'block';
@@ -372,7 +503,7 @@
                 }
                 
             } catch (error) {
-                console.error('❌ خطأ:', error);
+                console.error(' خطأ:', error);
                 showError('حدث خطأ في الاتصال: ' + error.message + '. تأكد من البيانات وحاول مرة أخرى.');
             } finally {
                 document.getElementById('loading').style.display = 'none';
@@ -396,7 +527,7 @@
                             <div class="planet-info">
                                 <span>🌟 البرج: <strong>${translate(data[planet].sign)}</strong></span>
                                 <span>📐 الدرجة: ${data[planet].degree}°</span>
-                                ${data[planet].house ? `<span>🏠 البيت: ${data[planet].house}</span>` : ''}
+                                ${data[planet].house ? `<span> البيت: ${data[planet].house}</span>` : ''}
                             </div>
                         </div>
                     `;
