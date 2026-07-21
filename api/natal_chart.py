@@ -62,7 +62,7 @@ def add_cors(response):
 def natal_chart():
     if request.method == 'OPTIONS':
         return '', 200
-    
+
     try:
         # استخراج البيانات
         name = request.args.get('name', 'User')
@@ -72,48 +72,97 @@ def natal_chart():
         hour = int(request.args.get('hour', 12))
         minute = int(request.args.get('minute', 0))
         city_key = request.args.get('city', 'baghdad').lower().strip()
-        
+
         # الحصول على بيانات المدينة
-        lat, lng, city_name = CITIES.get(city_key, CITIES['baghdad'])
-        
-        # إنشاء التاريخ والموقع
-        # ملاحظة: Flatlib تستخدم timezone offset (+03:00 للعراق)
+        city_data = CITIES.get(city_key)
+        if not city_data:
+            # إذا لم تكن المدينة موجودة، استخدم النجف كافتراضية
+            city_data = CITIES['najaf']
+
+        lat, lng, city_name = city_data
+
+        # ✅ الحل: تنسيق التاريخ الصحيح لـ Flatlib
+        # Flatlib تتطلب: 'YYYY/MM/DD' و 'HH:MM:SS'
         date_str = f'{year}/{month}/{day}'
-        time_str = f'{hour}:{minute}:00'
-        date = Datetime(date_str, time_str, '+03:00')
+        time_str = f'{hour:02d}:{minute:02d}:00'
+
+        # ✅ الحل: timezone offset (+03:00 للعراق، +03:00 للسعودية، +02:00 لمصر)
+        tz_offset = '+03:00'  # افتراضي للعراق
+        if city_key in ['cairo', 'alexandria']:
+            tz_offset = '+02:00'
+        elif city_key in ['dubai', 'abu dhabi']:
+            tz_offset = '+04:00'
+        elif city_key in ['london']:
+            tz_offset = '+00:00'
+
+        date = Datetime(date_str, time_str, tz_offset)
         pos = GeoPos(lat, lng)
-        
-        # حساب الخارطة
-        chart = Chart(date, pos)
-        
+
+        # ✅ الحل: معالجة الأخطاء عند حساب الخارطة
+        try:
+            chart = Chart(date, pos)
+        except Exception as chart_err:
+            print(f"Chart error: {chart_err}")
+            # إذا فشل حساب الخارطة، أرجع خطأ واضح
+            return jsonify({
+                'success': False,
+                'error': f'فشل في حساب الخارطة: {str(chart_err)}'
+            }), 500
+
         # دالة مساعدة لاستخراج بيانات الكوكب
         def get_planet_data(obj):
+            if obj is None:
+                return {'sign': 'Unknown', 'degree': 0.0}
             sign_idx = obj.sign  # رقم البرج (0-11)
+            if sign_idx < 0 or sign_idx >= 12:
+                sign_idx = 0
             degree_in_sign = obj.lon - (sign_idx * 30)  # الدرجة داخل البرج
             return {
                 'sign': SIGNS[sign_idx],
                 'degree': round(degree_in_sign, 2)
             }
-        
-        # استخراج جميع الكواكب
+
+        # استخراج جميع الكواكب مع معالجة الأخطاء
         result = {
             'success': True,
-            'data': {
-                'sun': get_planet_data(chart.get(const.SUN)),
-                'moon': get_planet_data(chart.get(const.MOON)),
-                'mercury': get_planet_data(chart.get(const.MERCURY)),
-                'venus': get_planet_data(chart.get(const.VENUS)),
-                'mars': get_planet_data(chart.get(const.MARS)),
-                'jupiter': get_planet_data(chart.get(const.JUPITER)),
-                'saturn': get_planet_data(chart.get(const.SATURN)),
-                'ascendant': get_planet_data(chart.get(const.ASC)),
-                'midheaven': get_planet_data(chart.get(const.MC))
-            },
+            'data': {},
             'city_used': city_name
         }
-        
+
+        # قائمة الكواكب
+        planets = {
+            'sun': const.SUN,
+            'moon': const.MOON,
+            'mercury': const.MERCURY,
+            'venus': const.VENUS,
+            'mars': const.MARS,
+            'jupiter': const.JUPITER,
+            'saturn': const.SATURN
+        }
+
+        for planet_name, planet_const in planets.items():
+            try:
+                obj = chart.get(planet_const)
+                result['data'][planet_name] = get_planet_data(obj)
+            except Exception as e:
+                print(f"Error getting {planet_name}: {e}")
+                result['data'][planet_name] = {'sign': 'Unknown', 'degree': 0.0}
+
+        # النقاط المهمة (Ascendant, MC)
+        try:
+            result['data']['ascendant'] = get_planet_data(chart.get(const.ASC))
+        except Exception as e:
+            print(f"Error getting ASC: {e}")
+            result['data']['ascendant'] = {'sign': 'Unknown', 'degree': 0.0}
+
+        try:
+            result['data']['midheaven'] = get_planet_data(chart.get(const.MC))
+        except Exception as e:
+            print(f"Error getting MC: {e}")
+            result['data']['midheaven'] = {'sign': 'Unknown', 'degree': 0.0}
+
         return jsonify(result)
-        
+
     except Exception as e:
         import traceback
         error_trace = traceback.format_exc()
@@ -124,4 +173,4 @@ def natal_chart():
         }), 500
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0', port=5000)
