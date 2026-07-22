@@ -2,6 +2,10 @@
   "version": 2,
   "builds": [
     {
+      "src": "public/index.html",
+      "use": "@vercel/static"
+    },
+    {
       "src": "api/natal_chart.py",
       "use": "@vercel/python"
     }
@@ -9,7 +13,7 @@
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "api/natal_chart.py"
+      "dest": "/api/natal_chart.py"
     },
     {
       "src": "/(.*)",
