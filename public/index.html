@@ -23,189 +23,70 @@
             border: 1px solid rgba(255,215,0,0.15);
             box-shadow: 0 25px 50px rgba(0,0,0,0.4);
         }
-        .logo {
-            text-align: center;
-            font-size: 3.5em;
-            margin-bottom: 5px;
-        }
+        .logo { text-align: center; font-size: 3.5em; margin-bottom: 5px; }
         h1 {
-            text-align: center;
-            color: #ffd700;
-            margin-bottom: 8px;
-            font-size: 1.9em;
-            text-shadow: 0 0 20px rgba(255,215,0,0.3);
+            text-align: center; color: #ffd700; margin-bottom: 8px;
+            font-size: 1.9em; text-shadow: 0 0 20px rgba(255,215,0,0.3);
         }
-        .subtitle {
-            text-align: center;
-            color: #aaa;
-            margin-bottom: 35px;
-            font-size: 0.95em;
-        }
-        .form-group {
-            margin-bottom: 22px;
-        }
-        label {
-            display: block;
-            margin-bottom: 10px;
-            color: #ffd700;
-            font-weight: bold;
-            font-size: 1.05em;
-        }
+        .subtitle { text-align: center; color: #aaa; margin-bottom: 35px; font-size: 0.95em; }
+        .form-group { margin-bottom: 22px; }
+        label { display: block; margin-bottom: 10px; color: #ffd700; font-weight: bold; font-size: 1.05em; }
         input, select {
-            width: 100%;
-            padding: 16px;
-            border: none;
-            border-radius: 14px;
-            font-size: 16px;
-            background: rgba(255,255,255,0.12);
-            color: white;
-            border: 2px solid rgba(255,215,0,0.2);
-            transition: all 0.3s;
+            width: 100%; padding: 16px; border: none; border-radius: 14px;
+            font-size: 16px; background: rgba(255,255,255,0.12); color: white;
+            border: 2px solid rgba(255,215,0,0.2); transition: all 0.3s;
         }
         input:focus, select:focus {
-            outline: none;
-            border-color: #ffd700;
-            background: rgba(255,255,255,0.18);
+            outline: none; border-color: #ffd700; background: rgba(255,255,255,0.18);
         }
-        input::placeholder {
-            color: #888;
-        }
+        input::placeholder { color: #888; }
         button {
-            width: 100%;
-            padding: 18px;
+            width: 100%; padding: 18px;
             background: linear-gradient(135deg, #ffd700 0%, #ff9500 100%);
-            color: #1a1a2e;
-            border: none;
-            border-radius: 14px;
-            font-size: 19px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin-top: 10px;
+            color: #1a1a2e; border: none; border-radius: 14px; font-size: 19px;
+            font-weight: bold; cursor: pointer; transition: all 0.3s; margin-top: 10px;
             box-shadow: 0 8px 25px rgba(255,215,0,0.3);
         }
-        button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 35px rgba(255,215,0,0.4);
-        }
-        button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
+        button:hover { transform: translateY(-3px); box-shadow: 0 12px 35px rgba(255,215,0,0.4); }
+        button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
         .error {
-            background: rgba(255,0,0,0.12);
-            border: 1px solid #ff4444;
-            color: #ff6b6b;
-            padding: 18px;
-            border-radius: 14px;
-            margin-top: 25px;
-            text-align: center;
-            display: none;
-            font-size: 0.95em;
+            background: rgba(255,0,0,0.12); border: 1px solid #ff4444; color: #ff6b6b;
+            padding: 18px; border-radius: 14px; margin-top: 25px; text-align: center;
+            display: none; font-size: 0.95em;
         }
-        .loading {
-            text-align: center;
-            color: #ffd700;
-            margin-top: 30px;
-            display: none;
-        }
+        .loading { text-align: center; color: #ffd700; margin-top: 30px; display: none; }
         .spinner {
-            display: inline-block;
-            width: 40px;
-            height: 40px;
-            border: 4px solid rgba(255,215,0,0.2);
-            border-top-color: #ffd700;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            margin-bottom: 15px;
+            display: inline-block; width: 40px; height: 40px;
+            border: 4px solid rgba(255,215,0,0.2); border-top-color: #ffd700;
+            border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 15px;
         }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        #result {
-            margin-top: 35px;
-            display: none;
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        #result { margin-top: 35px; display: none; }
         .result-header {
-            text-align: center;
-            padding: 25px;
-            background: rgba(255,215,0,0.08);
-            border-radius: 20px;
-            margin-bottom: 25px;
-            border: 1px solid rgba(255,215,0,0.2);
+            text-align: center; padding: 25px; background: rgba(255,215,0,0.08);
+            border-radius: 20px; margin-bottom: 25px; border: 1px solid rgba(255,215,0,0.2);
         }
-        .result-header h2 {
-            color: #ffd700;
-            font-size: 1.5em;
-            margin-bottom: 8px;
-        }
-        .result-header p {
-            color: #bbb;
-            font-size: 0.95em;
-        }
-        .planet-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 12px;
-        }
+        .result-header h2 { color: #ffd700; font-size: 1.5em; margin-bottom: 8px; }
+        .result-header p { color: #bbb; font-size: 0.95em; }
+        .planet-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
         .planet-card {
-            background: rgba(255,255,255,0.06);
-            border-radius: 16px;
-            padding: 18px 22px;
-            border-right: 4px solid #ffd700;
-            display: flex;
-            align-items: center;
-            gap: 18px;
-            transition: all 0.3s;
+            background: rgba(255,255,255,0.06); border-radius: 16px; padding: 18px 22px;
+            border-right: 4px solid #ffd700; display: flex; align-items: center;
+            gap: 18px; transition: all 0.3s;
         }
-        .planet-card:hover {
-            background: rgba(255,255,255,0.1);
-            transform: translateX(-5px);
-        }
-        .planet-emoji {
-            font-size: 2.2em;
-            min-width: 50px;
-            text-align: center;
-        }
-        .planet-info {
-            flex: 1;
-        }
-        .planet-name {
-            font-size: 1.15em;
-            font-weight: bold;
-            color: #ffd700;
-            margin-bottom: 4px;
-        }
-        .planet-sign {
-            color: #ddd;
-            font-size: 1em;
-        }
-        .planet-degree {
-            color: #aaa;
-            font-size: 0.85em;
-            margin-top: 3px;
-        }
-        .planet-retro {
-            color: #ff6b6b;
-            font-size: 0.8em;
-            margin-top: 2px;
-        }
+        .planet-card:hover { background: rgba(255,255,255,0.1); transform: translateX(-5px); }
+        .planet-emoji { font-size: 2.2em; min-width: 50px; text-align: center; }
+        .planet-info { flex: 1; }
+        .planet-name { font-size: 1.15em; font-weight: bold; color: #ffd700; margin-bottom: 4px; }
+        .planet-sign { color: #ddd; font-size: 1em; }
+        .planet-degree { color: #aaa; font-size: 0.85em; margin-top: 3px; }
+        .planet-retro { color: #ff6b6b; font-size: 0.8em; margin-top: 2px; }
         .footer-note {
-            text-align: center;
-            color: #666;
-            font-size: 0.8em;
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255,255,255,0.1);
+            text-align: center; color: #666; font-size: 0.8em; margin-top: 30px;
+            padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);
         }
-        .special-card {
-            border-right-color: #ff6b6b !important;
-            background: rgba(255,107,107,0.05) !important;
-        }
-        .special-card .planet-emoji {
-            font-size: 1.8em;
-        }
+        .special-card { border-right-color: #ff6b6b !important; background: rgba(255,107,107,0.05) !important; }
+        .special-card .planet-emoji { font-size: 1.8em; }
         @media (max-width: 500px) {
             .container { padding: 20px; }
             h1 { font-size: 1.5em; }
@@ -290,39 +171,24 @@
         </div>
         <div class="planet-grid" id="planetsList"></div>
         <div class="footer-note">
-            🔬 جميع الحسابات مبنية على بيانات NASA الفلكية الدقيقة<br>
-            باستخدام مكتبة Kerykeion المتخصصة في الحسابات الفلكية
+            🔬 جميع الحسابات مبنية على بيانات فلكية دقيقة<br>
         </div>
     </div>
 </div>
 
 <script>
-    // ⚠️ عدل هذا الرابط إلى رابط Vercel الخاص بك
-    const API_URL = 'https://kharitati.vercel.app/api/natal_chart';
-    // const API_URL = 'http://localhost:5000/api/natal_chart'; // للتطوير المحلي
+    // ✅ تم تعديل الرابط ليكون نسبياً. سيعمل تلقائياً على أي رابط Vercel أو محلي
+    const API_URL = '/api/natal_chart'; 
 
     const PLANET_EMOJIS = {
-        'sun': '☀️',
-        'moon': '🌙',
-        'mercury': '☿️',
-        'venus': '♀️',
-        'mars': '♂️',
-        'jupiter': '♃',
-        'saturn': '♄',
-        'ascendant': '⬆️',
-        'midheaven': '🔝'
+        'sun': '☀️', 'moon': '🌙', 'mercury': '☿️', 'venus': '♀️',
+        'mars': '♂️', 'jupiter': '♃', 'saturn': '♄', 'ascendant': '⬆️', 'midheaven': '🔝'
     };
 
     const PLANET_NAMES = {
-        'sun': 'الشمس',
-        'moon': 'القمر',
-        'mercury': 'عطارد',
-        'venus': 'الزهرة',
-        'mars': 'المريخ',
-        'jupiter': 'المشتري',
-        'saturn': 'زحل',
-        'ascendant': 'الطالع (Ascendant)',
-        'midheaven': 'الوسط السماوي (MC)'
+        'sun': 'الشمس', 'moon': 'القمر', 'mercury': 'عطارد', 'venus': 'الزهرة',
+        'mars': 'المريخ', 'jupiter': 'المشتري', 'saturn': 'زحل', 
+        'ascendant': 'الطالع (Ascendant)', 'midheaven': 'الوسط السماوي (MC)'
     };
 
     document.getElementById('chartForm').addEventListener('submit', async function(e) {
@@ -353,22 +219,15 @@
 
             const url = `${API_URL}?name=${encodeURIComponent(name)}&year=${year}&month=${month}&day=${day}&hour=${hour}&minute=${minute}&city=${encodeURIComponent(city)}`;
 
-            console.log('Fetching:', url);
-
             const response = await fetch(url, {
                 method: 'GET',
-                headers: {
-                    'Accept': 'application/json'
-                }
+                headers: { 'Accept': 'application/json' }
             });
 
-            console.log('Response status:', response.status);
-
             const data = await response.json();
-            console.log('Response data:', data);
 
-            if (!data.success) {
-                throw new Error(data.error || 'حدث خطأ غير معروف في الخادم');
+            if (!response.ok || !data.success) {
+                throw new Error(data.error || `خطأ في الخادم: ${response.status}`);
             }
 
             document.getElementById('resultTitle').textContent = `✨ خارطة ${name}`;
@@ -412,7 +271,7 @@
                 <div style="font-size: 1.3em; margin-bottom: 8px;">⚠️</div>
                 <div>${err.message}</div>
                 <div style="font-size: 0.85em; margin-top: 8px; opacity: 0.8;">
-                    تأكد من تشغيل الخادم وصحة الرابط
+                    تأكد من أن ملف api/natal_chart.py موجود ويعمل على Vercel
                 </div>
             `;
             errorDiv.style.display = 'block';
