@@ -3,597 +3,425 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>حساب الخارطة الفلكية الشخصية مجاناً | خريطتي</title>
-    <meta name="description" content="احسب خارطتك الفلكية الشخصية مجاناً. اعرف مواقع الكواكب، البرج، الصعود، والتحليل الفلكي الدقيق.">
-    <meta name="keywords" content="خارطة فلكية, أبراج, تنجيم, حساب البرج, الكواكب, علم الفلك, astrology">
-    <meta name="author" content="Kharitati">
-    
-    <!-- Open Graph -->
-    <meta property="og:title" content="حساب الخارطة الفلكية الشخصية">
-    <meta property="og:description" content="اكتشف أسرار شخصيتك من خلال خارطتك الفلكية - مجاناً">
-    <meta property="og:type" content="website">
-    <meta property="og:locale" content="ar_SA">
-    
+    <title>🌟 خريطتي - الخارطة الفلكية الشخصية</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
-            font-family: 'Segoe UI', Tahoma, 'Arial', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            color: white;
             min-height: 100vh;
             padding: 20px;
-            color: #333;
         }
-        
         .container {
-            max-width: 800px;
+            max-width: 700px;
             margin: 0 auto;
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(20px);
+            padding: 35px;
+            border-radius: 25px;
+            border: 1px solid rgba(255,215,0,0.15);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.4);
         }
-        
-        header {
+        .logo {
             text-align: center;
-            margin-bottom: 30px;
+            font-size: 3.5em;
+            margin-bottom: 5px;
         }
-        
         h1 {
-            color: #4a3b7a;
-            font-size: 2.2em;
-            margin-bottom: 10px;
+            text-align: center;
+            color: #ffd700;
+            margin-bottom: 8px;
+            font-size: 1.9em;
+            text-shadow: 0 0 20px rgba(255,215,0,0.3);
         }
-        
         .subtitle {
-            color: #666;
-            font-size: 1.1em;
+            text-align: center;
+            color: #aaa;
+            margin-bottom: 35px;
+            font-size: 0.95em;
         }
-        
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 22px;
         }
-        
         label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
+            color: #ffd700;
             font-weight: bold;
-            color: #4a3b7a;
-            font-size: 1.1em;
+            font-size: 1.05em;
         }
-        
         input, select {
             width: 100%;
-            padding: 14px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
+            padding: 16px;
+            border: none;
+            border-radius: 14px;
             font-size: 16px;
+            background: rgba(255,255,255,0.12);
+            color: white;
+            border: 2px solid rgba(255,215,0,0.2);
             transition: all 0.3s;
-            background: white;
         }
-        
         input:focus, select:focus {
             outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            border-color: #ffd700;
+            background: rgba(255,255,255,0.18);
         }
-        
+        input::placeholder {
+            color: #888;
+        }
         button {
             width: 100%;
-            padding: 16px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            padding: 18px;
+            background: linear-gradient(135deg, #ffd700 0%, #ff9500 100%);
+            color: #1a1a2e;
             border: none;
-            border-radius: 10px;
-            font-size: 18px;
+            border-radius: 14px;
+            font-size: 19px;
             font-weight: bold;
             cursor: pointer;
-            margin-top: 10px;
             transition: all 0.3s;
+            margin-top: 10px;
+            box-shadow: 0 8px 25px rgba(255,215,0,0.3);
         }
-        
-        button:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(255,215,0,0.4);
         }
-        
         button:disabled {
-            opacity: 0.6;
+            opacity: 0.5;
             cursor: not-allowed;
+            transform: none;
         }
-        
+        .error {
+            background: rgba(255,0,0,0.12);
+            border: 1px solid #ff4444;
+            color: #ff6b6b;
+            padding: 18px;
+            border-radius: 14px;
+            margin-top: 25px;
+            text-align: center;
+            display: none;
+            font-size: 0.95em;
+        }
         .loading {
             text-align: center;
-            padding: 30px;
-            display: none;
-        }
-        
-        .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #667eea;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 15px;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        #result {
+            color: #ffd700;
             margin-top: 30px;
             display: none;
         }
-        
+        .spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255,215,0,0.2);
+            border-top-color: #ffd700;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 15px;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        #result {
+            margin-top: 35px;
+            display: none;
+        }
         .result-header {
             text-align: center;
-            color: #4a3b7a;
-            margin-bottom: 20px;
+            padding: 25px;
+            background: rgba(255,215,0,0.08);
+            border-radius: 20px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255,215,0,0.2);
+        }
+        .result-header h2 {
+            color: #ffd700;
             font-size: 1.5em;
-        }
-        
-        .planet-card {
-            background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
-            padding: 18px;
-            margin: 12px 0;
-            border-radius: 12px;
-            border-right: 5px solid #667eea;
-            transition: transform 0.2s;
-        }
-        
-        .planet-card:hover {
-            transform: translateX(-5px);
-        }
-        
-        .planet-name {
-            font-weight: bold;
-            color: #4a3b7a;
-            font-size: 1.2em;
             margin-bottom: 8px;
         }
-        
-        .planet-info {
-            color: #555;
-            line-height: 1.8;
+        .result-header p {
+            color: #bbb;
+            font-size: 0.95em;
         }
-        
-        .planet-info span {
-            display: inline-block;
-            margin-left: 15px;
+        .planet-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
         }
-        
-        .error-message {
-            background: #fee;
-            color: #c00;
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 20px;
-            display: none;
-            border-right: 4px solid #c00;
-        }
-        
-        .info-box {
-            background: #e3f2fd;
-            color: #1565c0;
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 20px;
-            border-right: 4px solid #1565c0;
-            display: none;
-        }
-        
-        .share-buttons {
+        .planet-card {
+            background: rgba(255,255,255,0.06);
+            border-radius: 16px;
+            padding: 18px 22px;
+            border-right: 4px solid #ffd700;
             display: flex;
-            gap: 10px;
-            margin-top: 20px;
-            flex-wrap: wrap;
+            align-items: center;
+            gap: 18px;
+            transition: all 0.3s;
         }
-        
-        .share-btn {
+        .planet-card:hover {
+            background: rgba(255,255,255,0.1);
+            transform: translateX(-5px);
+        }
+        .planet-emoji {
+            font-size: 2.2em;
+            min-width: 50px;
+            text-align: center;
+        }
+        .planet-info {
             flex: 1;
-            min-width: 120px;
-            padding: 10px;
-            border-radius: 8px;
-            border: none;
-            cursor: pointer;
-            font-size: 14px;
-            color: white;
-            text-decoration: none;
-            text-align: center;
         }
-        
-        .share-twitter { background: #1da1f2; }
-        .share-whatsapp { background: #25d366; }
-        .share-facebook { background: #4267b2; }
-        
-        footer {
+        .planet-name {
+            font-size: 1.15em;
+            font-weight: bold;
+            color: #ffd700;
+            margin-bottom: 4px;
+        }
+        .planet-sign {
+            color: #ddd;
+            font-size: 1em;
+        }
+        .planet-degree {
+            color: #aaa;
+            font-size: 0.85em;
+            margin-top: 3px;
+        }
+        .planet-retro {
+            color: #ff6b6b;
+            font-size: 0.8em;
+            margin-top: 2px;
+        }
+        .footer-note {
             text-align: center;
-            margin-top: 30px;
             color: #666;
-            font-size: 0.9em;
+            font-size: 0.8em;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
         }
-        
-        @media (max-width: 600px) {
-            .container {
-                padding: 20px;
-            }
-            h1 {
-                font-size: 1.6em;
-            }
+        .special-card {
+            border-right-color: #ff6b6b !important;
+            background: rgba(255,107,107,0.05) !important;
+        }
+        .special-card .planet-emoji {
+            font-size: 1.8em;
+        }
+        @media (max-width: 500px) {
+            .container { padding: 20px; }
+            h1 { font-size: 1.5em; }
+            .planet-card { padding: 14px 16px; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>🌟 الخارطة الفلكية الشخصية</h1>
-            <p class="subtitle">اكتشف أسرار شخصيتك من خلال مواقع الكواكب عند ميلادك</p>
-        </header>
-        
-        <form id="chartForm">
-            <div class="form-group">
-                <label for="name">الاسم:</label>
-                <input type="text" id="name" placeholder="أدخل اسمك" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="date">تاريخ الميلاد:</label>
-                <input type="date" id="date" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="time">وقت الميلاد:</label>
-                <input type="time" id="time" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="city">مدينة الميلاد:</label>
-                <select id="city" required>
-                    <option value="">-- اختر المدينة --</option>
-                    
-                    <optgroup label="🇮🇶 العراق">
-                        <option value="baghdad">بغداد</option>
-                        <option value="basra">البصرة</option>
-                        <option value="mosul">الموصل</option>
-                        <option value="erbil">أربيل</option>
-                        <option value="najaf">النجف</option>
-                        <option value="karbala">كربلاء</option>
-                        <option value="kut">الكوت</option>
-                        <option value="nasiriyah">الناصرية</option>
-                        <option value="amara">العمارة</option>
-                        <option value="diwaniyah">الديوانية</option>
-                        <option value="hillah">الحلة</option>
-                        <option value="ramadi">الرمادي</option>
-                        <option value="fallujah">الفلوجة</option>
-                        <option value="samarra">سامراء</option>
-                        <option value="tikrit">تكريت</option>
-                        <option value="duhok">دهوك</option>
-                        <option value="sulaymaniyah">السليمانية</option>
-                        <option value="kirkuk">كركوك</option>
-                    </optgroup>
-                    
-                    <optgroup label="🇸 السعودية">
-                        <option value="riyadh">الرياض</option>
-                        <option value="jeddah">جدة</option>
-                        <option value="mecca">مكة المكرمة</option>
-                        <option value="medina">المدينة المنورة</option>
-                        <option value="dammam">الدمام</option>
-                        <option value="khobar">الخبر</option>
-                        <option value="tabuk">تبوك</option>
-                        <option value="abha">أبها</option>
-                    </optgroup>
-                    
-                    <optgroup label="🇦🇪 الإمارات">
-                        <option value="dubai">دبي</option>
-                        <option value="abu dhabi">أبوظبي</option>
-                        <option value="sharjah">الشارقة</option>
-                        <option value="ajman">عجمان</option>
-                    </optgroup>
-                    
-                    <optgroup label="🇪🇬 مصر">
-                        <option value="cairo">القاهرة</option>
-                        <option value="alexandria">الإسكندرية</option>
-                        <option value="giza">الجيزة</option>
-                        <option value="luxor">الأقصر</option>
-                        <option value="aswan">أسوان</option>
-                    </optgroup>
-                    
-                    <optgroup label="🇯🇴 الأردن">
-                        <option value="amman">عمّان</option>
-                        <option value="zarqa">الزرقاء</option>
-                        <option value="aqaba">العقبة</option>
-                    </optgroup>
-                    
-                    <optgroup label="🇰🇼 الكويت">
-                        <option value="kuwait">الكويت</option>
-                    </optgroup>
-                    
-                    <optgroup label="🇶🇦 قطر">
-                        <option value="doha">الدوحة</option>
-                    </optgroup>
-                    
-                    <optgroup label="🇧🇭 البحرين">
-                        <option value="manama">المنامة</option>
-                    </optgroup>
-                    
-                    <optgroup label="🇴🇲 عُمان">
-                        <option value="muscat">مسقط</option>
-                        <option value="salalah">صلالة</option>
-                    </optgroup>
-                    
-                    <optgroup label="🇲🇦 المغرب">
-                        <option value="rabat">الرباط</option>
-                        <option value="casablanca">الدار البيضاء</option>
-                        <option value="marrakech">مراكش</option>
-                        <option value="fes">فاس</option>
-                    </optgroup>
-                    
-                    <optgroup label="🇹🇳 تونس">
-                        <option value="tunis">تونس</option>
-                        <option value="sousse">سوسة</option>
-                    </optgroup>
-                    
-                    <optgroup label="🇩🇿 الجزائر">
-                        <option value="algiers">الجزائر</option>
-                        <option value="oran">وهران</option>
-                    </optgroup>
-                    
-                    <optgroup label="🇱🇧 لبنان">
-                        <option value="beirut">بيروت</option>
-                        <option value="tripoli">طرابلس</option>
-                    </optgroup>
-                    
-                    <optgroup label="🇸🇾 سوريا">
-                        <option value="damascus">دمشق</option>
-                        <option value="aleppo">حلب</option>
-                    </optgroup>
-                    
-                    <optgroup label="🇵🇸 فلسطين">
-                        <option value="jerusalem">القدس</option>
-                        <option value="gaza">غزة</option>
-                        <option value="ramallah">رام الله</option>
-                    </optgroup>
-                    
-                    <optgroup label="🇾🇪 اليمن">
-                        <option value="sanaa">صنعاء</option>
-                        <option value="aden">عدن</option>
-                    </optgroup>
-                    
-                    <optgroup label="🇱 ليبيا">
-                        <option value="tripoli libya">طرابلس</option>
-                        <option value="benghazi">بنغازي</option>
-                    </optgroup>
-                    
-                    <optgroup label="🇸🇩 السودان">
-                        <option value="khartoum">الخرطوم</option>
-                    </optgroup>
-                    
-                    <optgroup label="🌍 مدن عالمية">
-                        <option value="london">لندن</option>
-                        <option value="paris">باريس</option>
-                        <option value="new york">نيويورك</option>
-                        <option value="los angeles">لوس أنجلوس</option>
-                        <option value="istanbul">إسطنبول</option>
-                        <option value="berlin">برلين</option>
-                        <option value="moscow">موسكو</option>
-                        <option value="tokyo">طوكيو</option>
-                    </optgroup>
-                </select>
-                <small style="color: #666; display: block; margin-top: 5px;">اختر مدينة ميلادك من القائمة</small>
-            </div>
-            
-            <button type="submit" id="submitBtn">احسب الخارطة الفلكية</button>
-        </form>
-        
-        <div class="loading" id="loading">
-            <div class="spinner"></div>
-            <p>جاري حساب الخارطة الفلكية... قد يستغرق بضع ثوانٍ</p>
+
+<div class="container">
+    <div class="logo">🌙</div>
+    <h1>خريطتي</h1>
+    <p class="subtitle">اكتشف أسرار شخصيتك من خلال مواقع الكواكب عند ميلادك</p>
+
+    <form id="chartForm">
+        <div class="form-group">
+            <label>👤 الاسم:</label>
+            <input type="text" id="name" value="سيف" placeholder="أدخل اسمك">
         </div>
-        
-        <div class="error-message" id="errorMessage"></div>
-        
-        <div class="info-box" id="infoBox"></div>
-        
-        <div id="result"></div>
-        
-        <footer>
-            <p>🌙 خريطتي - حساب الخوارط الفلكية بدقة علمية</p>
-            <p style="margin-top: 10px;">جميع الحسابات مبنية على بيانات NASA الفلكية</p>
-        </footer>
+        <div class="form-group">
+            <label>📅 تاريخ الميلاد:</label>
+            <input type="date" id="date" value="2016-07-20" required>
+        </div>
+        <div class="form-group">
+            <label>⏰ وقت الميلاد:</label>
+            <input type="time" id="time" value="22:25" required>
+        </div>
+        <div class="form-group">
+            <label>🌍 مدينة الميلاد:</label>
+            <select id="city" required>
+                <option value="najaf">🕌 النجف، العراق</option>
+                <option value="baghdad">🏛️ بغداد، العراق</option>
+                <option value="basra">⚓ البصرة، العراق</option>
+                <option value="mosul">🏰 الموصل، العراق</option>
+                <option value="erbil">🏔️ أربيل، العراق</option>
+                <option value="karbala">🕋 كربلاء، العراق</option>
+                <option value="kut">🌾 الكوت، العراق</option>
+                <option value="nasiriyah">🌴 الناصرية، العراق</option>
+                <option value="amara">🌊 العمارة، العراق</option>
+                <option value="diwaniyah">🌻 الديوانية، العراق</option>
+                <option value="hillah">🌺 الحلة، العراق</option>
+                <option value="ramadi">🏜️ الرمادي، العراق</option>
+                <option value="fallujah">🌵 الفلوجة، العراق</option>
+                <option value="samarra">🕌 سامراء، العراق</option>
+                <option value="tikrit">🏛️ تكريت، العراق</option>
+                <option value="duhok">⛰️ دهوك، العراق</option>
+                <option value="sulaymaniyah">🗻 السليمانية، العراق</option>
+                <option value="kirkuk">⛽ كركوك، العراق</option>
+                <option value="cairo">🐪 القاهرة، مصر</option>
+                <option value="alexandria">🏛️ الإسكندرية، مصر</option>
+                <option value="riyadh">🏙️ الرياض، السعودية</option>
+                <option value="jeddah">🕋 جدة، السعودية</option>
+                <option value="mecca">🕋 مكة، السعودية</option>
+                <option value="medina">🕌 المدينة، السعودية</option>
+                <option value="dammam">🌊 الدمام، السعودية</option>
+                <option value="dubai">🏙️ دبي، الإمارات</option>
+                <option value="abu dhabi">🌴 أبوظبي، الإمارات</option>
+                <option value="amman">🏛️ عمّان، الأردن</option>
+                <option value="kuwait">🏙️ الكويت</option>
+                <option value="doha">🏙️ الدوحة، قطر</option>
+                <option value="manama">🏙️ المنامة، البحرين</option>
+                <option value="muscat">🏔️ مسقط، عمان</option>
+                <option value="beirut">🏛️ بيروت، لبنان</option>
+                <option value="damascus">🏛️ دمشق، سوريا</option>
+                <option value="london">🎡 لندن، بريطانيا</option>
+            </select>
+        </div>
+        <button type="submit" id="submitBtn">✨ احسب الخارطة الفلكية</button>
+    </form>
+
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <p>جاري حساب مواقع الكواكب...</p>
     </div>
 
-    <script>
-        // قاموس الترجمة
-        const translations = {
-            'Sun': 'الشمس ☀️',
-            'Moon': 'القمر 🌙',
-            'Mercury': 'عطارد ☿️',
-            'Venus': 'الزهرة ♀️',
-            'Mars': 'المريخ ♂️',
-            'Jupiter': 'المشتري ♃',
-            'Saturn': 'زحل ♄',
-            'Uranus': 'أورانوس ♅',
-            'Neptune': 'نبتون ♆',
-            'Pluto': 'بلوتو ♇',
-            'Ascendant': 'الصعود ⬆️',
-            'Midheaven': 'وسط السماء ',
-            'North Node': 'العقدة الشمالية ☊',
-            'South Node': 'العقدة الجنوبية ☋',
-            'Chiron': 'كيرون',
-            'Aries': 'الحمل ♈',
-            'Taurus': 'الثور ♉',
-            'Gemini': 'الجوزاء ♊',
-            'Cancer': 'السرطان ♋',
-            'Leo': 'الأسد ♌',
-            'Virgo': 'العذراء ♍',
-            'Libra': 'الميزان ♎',
-            'Scorpio': 'العقرب ♏',
-            'Sagittarius': 'القوس ♐',
-            'Capricorn': 'الجدي ♑',
-            'Aquarius': 'الدلو ♒',
-            'Pisces': 'الحوت ♓'
-        };
+    <div class="error" id="error"></div>
 
-        function translate(text) {
-            if (!text) return 'غير محدد';
-            return translations[text] || text;
-        }
+    <div id="result">
+        <div class="result-header">
+            <h2 id="resultTitle"></h2>
+            <p id="resultDate"></p>
+        </div>
+        <div class="planet-grid" id="planetsList"></div>
+        <div class="footer-note">
+            🔬 جميع الحسابات مبنية على بيانات NASA الفلكية الدقيقة<br>
+            باستخدام مكتبة Kerykeion المتخصصة في الحسابات الفلكية
+        </div>
+    </div>
+</div>
 
-        // معالجة إرسال النموذج
-        document.getElementById('chartForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const name = document.getElementById('name').value.trim();
-            const date = document.getElementById('date').value;
-            const time = document.getElementById('time').value;
+<script>
+    // ✅ رابط Vercel المحدث
+    const API_URL = 'https://kharitati-nu.vercel.app/api/natal_chart';
+    // const API_URL = 'http://localhost:5000/api/natal_chart'; // للتطوير المحلي
+
+    const PLANET_EMOJIS = {
+        'sun': '☀️',
+        'moon': '🌙',
+        'mercury': '☿️',
+        'venus': '♀️',
+        'mars': '♂️',
+        'jupiter': '♃',
+        'saturn': '♄',
+        'ascendant': '⬆️',
+        'midheaven': '🔝'
+    };
+
+    const PLANET_NAMES = {
+        'sun': 'الشمس',
+        'moon': 'القمر',
+        'mercury': 'عطارد',
+        'venus': 'الزهرة',
+        'mars': 'المريخ',
+        'jupiter': 'المشتري',
+        'saturn': 'زحل',
+        'ascendant': 'الطالع (Ascendant)',
+        'midheaven': 'الوسط السماوي (MC)'
+    };
+
+    document.getElementById('chartForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const errorDiv = document.getElementById('error');
+        const resultDiv = document.getElementById('result');
+        const loadingDiv = document.getElementById('loading');
+        const submitBtn = document.getElementById('submitBtn');
+
+        errorDiv.style.display = 'none';
+        resultDiv.style.display = 'none';
+        loadingDiv.style.display = 'block';
+        submitBtn.disabled = true;
+
+        try {
+            const name = document.getElementById('name').value.trim() || 'مستخدم';
+            const dateInput = document.getElementById('date').value;
+            const timeInput = document.getElementById('time').value;
             const city = document.getElementById('city').value;
-            
-            if (!name || !date || !time || !city) {
-                showError('يرجى ملء جميع الحقول');
-                return;
-            }
-            
-            // استخراج السنة والشهر واليوم
-            const [year, month, day] = date.split('-').map(Number);
-            const [hour, minute] = time.split(':').map(Number);
-            
-            console.log(' بيانات الحساب:', { name, year, month, day, hour, minute, city });
-            
-            // إظهار التحميل
-            document.getElementById('loading').style.display = 'block';
-            document.getElementById('result').style.display = 'none';
-            document.getElementById('errorMessage').style.display = 'none';
-            document.getElementById('infoBox').style.display = 'none';
-            document.getElementById('submitBtn').disabled = true;
-            
-            try {
-                // بناء URL مع المعاملات
-                const apiUrl = `/api/natal_chart?name=${encodeURIComponent(name)}&year=${year}&month=${month}&day=${day}&hour=${hour}&minute=${minute}&city=${encodeURIComponent(city)}`;
-                
-                console.log('🔗 استدعاء API:', apiUrl);
-                
-                const response = await fetch(apiUrl, {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json',
-                    }
-                });
-                
-                console.log('📡 حالة الاستجابة:', response.status);
-                
-                if (!response.ok) {
-                    throw new Error(`خطأ في الخادم: ${response.status}`);
-                }
-                
-                const data = await response.json();
-                console.log('✅ البيانات المستلمة:', data);
-                
-                if (data.success && data.data) {
-                    displayResults(data.data);
-                    showInfo('✨ تم حساب الخارطة الفلكية بنجاح!');
-                } else {
-                    throw new Error(data.error || 'حدث خطأ غير معروف في الحساب');
-                }
-                
-            } catch (error) {
-                console.error(' خطأ:', error);
-                showError('حدث خطأ في الاتصال: ' + error.message + '. تأكد من البيانات وحاول مرة أخرى.');
-            } finally {
-                document.getElementById('loading').style.display = 'none';
-                document.getElementById('submitBtn').disabled = false;
-            }
-        });
 
-        function displayResults(data) {
-            const resultDiv = document.getElementById('result');
-            
-            let html = '<h2 class="result-header">🌟 نتائج الخارطة الفلكية</h2>';
-            
-            // الكواكب الأساسية
-            const planets = ['sun', 'moon', 'mercury', 'venus', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune', 'pluto'];
-            
-            planets.forEach(planet => {
-                if (data[planet]) {
-                    html += `
-                        <div class="planet-card">
-                            <div class="planet-name">${translate(planet)}</div>
-                            <div class="planet-info">
-                                <span>🌟 البرج: <strong>${translate(data[planet].sign)}</strong></span>
-                                <span>📐 الدرجة: ${data[planet].degree}°</span>
-                                ${data[planet].house ? `<span> البيت: ${data[planet].house}</span>` : ''}
-                            </div>
-                        </div>
-                    `;
+            if (!dateInput || !timeInput) {
+                throw new Error('يرجى إدخال التاريخ والوقت');
+            }
+
+            const [year, month, day] = dateInput.split('-').map(Number);
+            const [hour, minute] = timeInput.split(':').map(Number);
+
+            const url = `${API_URL}?name=${encodeURIComponent(name)}&year=${year}&month=${month}&day=${day}&hour=${hour}&minute=${minute}&city=${encodeURIComponent(city)}`;
+
+            console.log('Fetching:', url);
+
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json'
                 }
             });
-            
-            // الصعود ووسط السماء
-            if (data.ascendant) {
-                html += `
-                    <div class="planet-card" style="border-right-color: #764ba2;">
-                        <div class="planet-name">${translate('Ascendant')}</div>
-                        <div class="planet-info">
-                            <span>🌟 البرج: <strong>${translate(data.ascendant.sign)}</strong></span>
-                            <span>📐 الدرجة: ${data.ascendant.degree}°</span>
-                        </div>
+
+            console.log('Response status:', response.status);
+
+            const data = await response.json();
+            console.log('Response data:', data);
+
+            if (!data.success) {
+                throw new Error(data.error || 'حدث خطأ غير معروف في الخادم');
+            }
+
+            document.getElementById('resultTitle').textContent = `✨ خارطة ${name}`;
+            document.getElementById('resultDate').textContent = 
+                `📅 ${year}-${String(month).padStart(2,'0')}-${String(day).padStart(2,'0')} | ` +
+                `⏰ ${String(hour).padStart(2,'0')}:${String(minute).padStart(2,'0')} | ` +
+                `🌍 ${data.city_used || city}`;
+
+            const planetsList = document.getElementById('planetsList');
+            planetsList.innerHTML = '';
+
+            const planetOrder = ['sun', 'moon', 'mercury', 'venus', 'mars', 'jupiter', 'saturn', 'ascendant', 'midheaven'];
+
+            planetOrder.forEach(key => {
+                const p = data.data[key];
+                if (!p) return;
+
+                const isSpecial = key === 'ascendant' || key === 'midheaven';
+                const retroText = p.retrograde ? '<div class="planet-retro">↩️ تراجعي (Retrograde)</div>' : '';
+
+                const card = document.createElement('div');
+                card.className = `planet-card ${isSpecial ? 'special-card' : ''}`;
+                card.innerHTML = `
+                    <div class="planet-emoji">${PLANET_EMOJIS[key] || '⭐'}</div>
+                    <div class="planet-info">
+                        <div class="planet-name">${PLANET_NAMES[key] || key}</div>
+                        <div class="planet-sign">♈ برج ${p.sign_ar || p.sign}</div>
+                        <div class="planet-degree">📐 الدرجة ${p.degree}° | الطول ${p.longitude}°</div>
+                        ${retroText}
                     </div>
                 `;
-            }
-            
-            if (data.midheaven) {
-                html += `
-                    <div class="planet-card" style="border-right-color: #f093fb;">
-                        <div class="planet-name">${translate('Midheaven')}</div>
-                        <div class="planet-info">
-                            <span>🌟 البرج: <strong>${translate(data.midheaven.sign)}</strong></span>
-                            <span>📐 الدرجة: ${data.midheaven.degree}°</span>
-                        </div>
-                    </div>
-                `;
-            }
-            
-            // أزرار المشاركة
-            html += `
-                <div class="share-buttons">
-                    <a href="https://twitter.com/intent/tweet?text=حسبت خريطتي الفلكية!&url=${window.location.href}" 
-                       target="_blank" class="share-btn share-twitter">🐦 تويتر</a>
-                    <a href="https://wa.me/?text=حسبت خريطتي الفلكية! ${window.location.href}" 
-                       target="_blank" class="share-btn share-whatsapp">💬 واتساب</a>
-                    <a href="https://www.facebook.com/sharer/sharer.php?u=${window.location.href}" 
-                       target="_blank" class="share-btn share-facebook">📘 فيسبوك</a>
+                planetsList.appendChild(card);
+            });
+
+            resultDiv.style.display = 'block';
+            resultDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+        } catch (err) {
+            console.error('Error:', err);
+            errorDiv.innerHTML = `
+                <div style="font-size: 1.3em; margin-bottom: 8px;">⚠️</div>
+                <div>${err.message}</div>
+                <div style="font-size: 0.85em; margin-top: 8px; opacity: 0.8;">
+                    تأكد من تشغيل الخادم وصحة الرابط
                 </div>
             `;
-            
-            resultDiv.innerHTML = html;
-            resultDiv.style.display = 'block';
-            
-            // تمرير للنتائج
-            resultDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-
-        function showError(message) {
-            const errorDiv = document.getElementById('errorMessage');
-            errorDiv.textContent = '⚠️ ' + message;
             errorDiv.style.display = 'block';
-            errorDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } finally {
+            loadingDiv.style.display = 'none';
+            submitBtn.disabled = false;
         }
+    });
+</script>
 
-        function showInfo(message) {
-            const infoDiv = document.getElementById('infoBox');
-            infoDiv.textContent = message;
-            infoDiv.style.display = 'block';
-        }
-
-        // رسالة ترحيبية في Console
-        console.log('%c🌟 مرحباً بك في خريطتي!', 'color: #667eea; font-size: 20px; font-weight: bold;');
-        console.log('%cلمساعدة في التشخيص، افتح Console وشاهد الرسائل', 'color: #666;');
-    </script>
 </body>
 </html>
