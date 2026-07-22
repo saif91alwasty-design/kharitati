@@ -4,20 +4,12 @@
     {
       "src": "api/natal_chart.py",
       "use": "@vercel/python"
-    },
-    {
-      "src": "public/**",
-      "use": "@vercel/static"
     }
   ],
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "/api/natal_chart.py"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/public/$1"
+      "dest": "api/natal_chart.py"
     }
   ]
 }
