@@ -1,2 +1,2 @@
-kerykeion
-flask
+flask==3.0.0
+kerykeion==5.12.9
